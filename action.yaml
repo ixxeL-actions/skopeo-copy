@@ -52,8 +52,8 @@ runs:
                     --format ${{ inputs.format }} \
                     --src-tls-verify=${{ inputs.src-tls }} \
                     --src-creds=${{ inputs.src-creds }} \
-                    --dest-tls-verify=${{ inputs.src-tls }} \
-                    --dest-creds=${{ inputs.src-creds }} \
+                    --dest-tls-verify=${{ inputs.dst-tls }} \
+                    --dest-creds=${{ inputs.dst-creds }} \
                     ${{ inputs.src-transport }}://${{ inputs.src-img }} \
                     ${{ inputs.dst-transport }}://${{ inputs.dst-img }}
 
