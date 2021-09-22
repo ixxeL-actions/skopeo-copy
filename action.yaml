@@ -4,10 +4,10 @@ description: 'Transfer docker images with Skopeo'
 author: 'ixxeL'
 inputs:
   src-img:
-    description: 'nom de l'image source'
+    description: 'source image name'
     required: true
   dst-img:
-    description: 'nom de l'image destination'
+    description: 'destination image name'
     required: true
   format:
     description: 'MANIFEST TYPE (oci, v2s1, or v2s2) to use in the destination (default is manifest type of source, with fallbacks)'
