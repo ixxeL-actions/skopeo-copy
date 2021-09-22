@@ -19,12 +19,12 @@ jobs:
     - name: Skopeo copy docker image
       uses: ixxeL-actions/skopeo-push@main
       with:
-        src-img: 'ixxel/multi-tools-alpine:latest'
-        dst-img: 'ixxel/multi-tools-alpine:latest'
+        src-img: 'alpine:latest'
+        dst-img: 'ixxel/alpine:latest'
         format: 'v2s2'
         src-transport: 'docker'
         dst-transport: 'docker'
-        src-creds: 'ixxel:${{ secrets.DOCKER_IO_PWD }}'
+        src-creds: '""'
         dst-creds: 'ixxel:${{ secrets.DOCKER_IO_PWD }}'
         src-tls: 'false'
         dst-tls: 'false'
