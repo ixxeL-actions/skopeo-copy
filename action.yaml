@@ -24,11 +24,11 @@ inputs:
   src-creds:
     description: 'source credentials'
     required: false
-    default: '""'
+    default: 'null'
   dst-creds:
     description: 'destination credentials'
     required: false
-    default: '""'
+    default: 'null'
   src-tls:
     description: 'require HTTPS and verify certificates when talking to the container registry or daemon'
     required: false
@@ -45,8 +45,24 @@ runs:
         echo -e "${BLUE}[ STEP - TRANSFERING IMAGE ] > Transfering docker image with skopeo.${BLANK}"
         echo -e "${CYAN}[ INFO ] > Skopeo version.${BLANK}"
         skopeo --version
-        
         echo -e "${YELLOW}[ EXECUTING ] > Executing ${{ inputs.dst-img }} transfer.${BLANK}"
+        if [ "${{ inputs.src-transport }}" = "dir" ]
+        then
+          SRC_DELIMITER=":/"
+        elif [ "${{ inputs.src-transport }}" = "docker" ]
+          SRC_DELIMITER="://"
+        else
+          SRC_DELIMITER=":"
+        fi
+
+        if [ "${{ inputs.dst-transport }}" = "dir" ]
+        then
+          DST_DELIMITER=":/"
+        elif [ "${{ inputs.dst-transport }}" = "docker" ]
+          DST_DELIMITER="://"
+        else
+          DST_DELIMITER=":"
+        fi
 
         skopeo copy --insecure-policy \
                     --format ${{ inputs.format }} \
@@ -54,8 +70,21 @@ runs:
                     --src-creds=${{ inputs.src-creds }} \
                     --dest-tls-verify=${{ inputs.dst-tls }} \
                     --dest-creds=${{ inputs.dst-creds }} \
-                    ${{ inputs.src-transport }}://${{ inputs.src-img }} \
-                    ${{ inputs.dst-transport }}://${{ inputs.dst-img }}
+                    ${{ inputs.src-transport }}${SRC_DELIMITER}${{ inputs.src-img }} \
+                    ${{ inputs.dst-transport }}${DST_DELIMITER}${{ inputs.dst-img }}
+
+        echo -e "${YELLOW}[ EXECUTING ] > Verifying upload of image ${{ inputs.dst-img }}.${BLANK}"
+        skopeo_output=$(skopeo list-tags ${{ inputs.dst-transport }}${DST_DELIMITER}${{ inputs.dst-img }} --tls-verify=${{ inputs.dst-tls }} --creds=${{ inputs.dst-creds }})
+        echo -e "${CYAN}[ INFO ] > Tags list for remote repo.${BLANK}"
+        echo "$skopeo_output" | jq
+        tag=$(echo ${{ inputs.dst-img }} | awk -F ":" '{print $2}')
+        if [[ $(echo ${skopeo_output} | grep -iE "${tag}") ]]
+        then
+          echo -e "${GREEN}[ CHECK SUCCESS ] > Docker image ${{ inputs.dst-img }} found in repository.${BLANK}"
+        else
+          echo -e "${RED}[ STEP FAILED ] > Something went wrong when uploading the docker image ${{ inputs.dst-img }} .${BLANK}"
+          exit 1
+        fi
 
       shell: bash
       env:
