@@ -24,11 +24,11 @@ inputs:
   src-creds:
     description: 'source credentials'
     required: false
-    default: ''
+    default: '""'
   dst-creds:
     description: 'destination credentials'
     required: false
-    default: ''
+    default: '""'
   src-tls:
     description: 'require HTTPS and verify certificates when talking to the container registry or daemon'
     required: false
