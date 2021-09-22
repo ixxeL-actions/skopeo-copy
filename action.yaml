@@ -62,9 +62,6 @@ runs:
           DST_DELIMITER=":"
         fi
 
-        echo "$SRC_DELIMITER"
-        echo "$DST_DELIMITER"
-
         skopeo copy --insecure-policy \
                     --format ${{ inputs.format }} \
                     --src-tls-verify=${{ inputs.src-tls }} \
@@ -75,10 +72,11 @@ runs:
                     ${{ inputs.dst-transport }}${DST_DELIMITER}${{ inputs.dst-img }}
 
         echo -e "${YELLOW}[ EXECUTING ] > Verifying upload of image ${{ inputs.dst-img }}.${BLANK}"
-        skopeo_output=$(skopeo list-tags ${{ inputs.dst-transport }}${DST_DELIMITER}${{ inputs.dst-img }} --tls-verify=${{ inputs.dst-tls }} --creds=${{ inputs.dst-creds }})
+        image=$(echo ${{ inputs.dst-img }} | awk -F ":" '{print $1}')
+        tag=$(echo ${{ inputs.dst-img }} | awk -F ":" '{print $2}')
+        skopeo_output=$(skopeo list-tags ${{ inputs.dst-transport }}${DST_DELIMITER}${image} --tls-verify=${{ inputs.dst-tls }} --creds=${{ inputs.dst-creds }})
         echo -e "${CYAN}[ INFO ] > Tags list for remote repo.${BLANK}"
         echo "$skopeo_output" | jq
-        tag=$(echo ${{ inputs.dst-img }} | awk -F ":" '{print $2}')
         if [[ $(echo ${skopeo_output} | grep -iE "${tag}") ]]
         then
           echo -e "${GREEN}[ CHECK SUCCESS ] > Docker image ${{ inputs.dst-img }} found in repository.${BLANK}"
