@@ -64,6 +64,9 @@ runs:
           DST_DELIMITER=":"
         fi
 
+        echo "$SRC_DELIMITER"
+        echo "$DST_DELIMITER"
+
         skopeo copy --insecure-policy \
                     --format ${{ inputs.format }} \
                     --src-tls-verify=${{ inputs.src-tls }} \
