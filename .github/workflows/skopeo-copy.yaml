@@ -24,7 +24,7 @@ jobs:
         format: 'v2s2'
         src-transport: 'docker'
         dst-transport: 'docker'
-        src-creds: ''
+        src-creds: 'null'
         dst-creds: 'ixxel:${{ secrets.DOCKER_IO_PWD }}'
         src-tls: 'false'
         dst-tls: 'false'
