@@ -46,19 +46,17 @@ runs:
         echo -e "${CYAN}[ INFO ] > Skopeo version.${BLANK}"
         skopeo --version
         echo -e "${YELLOW}[ EXECUTING ] > Executing ${{ inputs.dst-img }} transfer.${BLANK}"
-        if [ "${{ inputs.src-transport }}" = "dir" ]
-        then
+        if [ "${{ inputs.src-transport }}" = "dir" ]; then
           SRC_DELIMITER=":/"
-        elif [ "${{ inputs.src-transport }}" = "docker" ]
+        elif [ "${{ inputs.src-transport }}" = "docker" ]; then
           SRC_DELIMITER="://"
         else
           SRC_DELIMITER=":"
         fi
 
-        if [ "${{ inputs.dst-transport }}" = "dir" ]
-        then
+        if [ "${{ inputs.dst-transport }}" = "dir" ]; then
           DST_DELIMITER=":/"
-        elif [ "${{ inputs.dst-transport }}" = "docker" ]
+        elif [ "${{ inputs.dst-transport }}" = "docker" ]; then
           DST_DELIMITER="://"
         else
           DST_DELIMITER=":"
