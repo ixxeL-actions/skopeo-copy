@@ -17,7 +17,7 @@ jobs:
       options: --privileged
     steps:
     - name: Skopeo copy docker image
-      uses: ixxeL-actions/skopeo-push@main
+      uses: ixxeL-actions/skopeo-copy@main
       with:
         src-img: 'alpine:latest'
         dst-img: 'ixxel/alpine:latest'
