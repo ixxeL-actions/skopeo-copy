@@ -76,7 +76,7 @@ runs:
       tag=$(echo ${{ inputs.dst-img }} | awk -F ":" '{print $2}')
       skopeo_output=$(skopeo list-tags ${{ inputs.dst-transport }}${DST_DELIMITER}${image} --tls-verify=${{ inputs.dst-tls }} --creds=${{ inputs.dst-creds }})
       echo -e "${CYAN}[ INFO ] > Tags list for remote repo.${BLANK}"
-      echo "$skopeo_output" | jq
+      echo "$skopeo_output" | jq -C
       if [[ $(echo ${skopeo_output} | grep -iE "${tag}") ]]
       then
         echo -e "${GREEN}[ CHECK SUCCESS ] > Docker image ${{ inputs.dst-img }} found in repository.${BLANK}"

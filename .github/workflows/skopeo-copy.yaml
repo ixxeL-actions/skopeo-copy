@@ -9,10 +9,7 @@ on:
     - main
 jobs:
   test:
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     container:
       image: ixxel/multi-tools-alpine:latest
       options: --privileged
