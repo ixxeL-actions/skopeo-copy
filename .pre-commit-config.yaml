@@ -1,0 +1,32 @@
+---
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.0.1
+  hooks:
+  - id: check-yaml
+  - id: trailing-whitespace
+  - id: end-of-file-fixer
+  - id: detect-private-key
+  - id: check-json
+# - id: pretty-format-json
+- repo: https://github.com/adrienverge/yamllint
+  rev: v1.26.3
+  hooks:
+  - id: yamllint
+    args: [--config-file, .yamllint-cfg.yaml]
+- repo: https://github.com/jumanjihouse/pre-commit-hook-yamlfmt
+  rev: 0.1.0
+  hooks:
+  - id: yamlfmt
+    args: [--mapping, '2', --sequence, '2', --offset, '0', --width, '150']
+- repo: https://github.com/hadolint/hadolint
+  rev: v2.8.0
+  hooks:
+  - id: hadolint
+    args: [--failure-threshold, error]
+    # - repo: https://github.com/lyz-code/yamlfix
+    #   rev: 0.8.0
+    #   hooks:
+    #       - id: yamlfix

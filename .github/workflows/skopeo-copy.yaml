@@ -1,30 +1,31 @@
+---
 name: skopeo-copy-CI
 on:
   push:
     branches:
-      - main
+    - main
   pull_request:
     branches:
-      - main
+    - main
 jobs:
   test:
     strategy:
       matrix:
         os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
-    container: 
+    container:
       image: ixxel/multi-tools-alpine:latest
       options: --privileged
     steps:
     - name: Skopeo copy docker image
       uses: ixxeL-actions/skopeo-copy@main
       with:
-        src-img: 'alpine:latest'
-        dst-img: 'ixxel/alpine:latest'
-        format: 'v2s2'
-        src-transport: 'docker'
-        dst-transport: 'docker'
+        src-img: alpine:latest
+        dst-img: ixxel/alpine:latest
+        format: v2s2
+        src-transport: docker
+        dst-transport: docker
         src-creds: 'null'
-        dst-creds: 'ixxel:${{ secrets.DOCKER_IO_PWD }}'
+        dst-creds: ixxel:${{ secrets.DOCKER_IO_PWD }}
         src-tls: 'false'
         dst-tls: 'false'
